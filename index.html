@@ -213,7 +213,7 @@ body{
 
 <script>
 let linkLoaded = false;
-let linkList = null;
+let linkList = [];
 
 function toggleAuthor(){
   const el = document.getElementById("authorSub");
@@ -224,27 +224,27 @@ async function toggleRelated(){
   const wrap = document.getElementById("relatedSub");
   wrap.style.display = wrap.style.display === "none" ? "flex" : "none";
   if(wrap.style.display === "flex" && !linkLoaded){
-    await fetchLinkJS();
+    await fetchLinkData();
   }
 }
 
-async function fetchLinkJS(){
+async function fetchLinkData(){
   const tip = document.getElementById("linkTip");
-  tip.textContent = "Loading link.js...";
+  tip.textContent = "Loading list.js...";
   try{
-    const res = await fetch("./link.js");
-    if(!res.ok) throw new Error("File not found");
-    const code = await res.text();
-    // 执行代码
-    eval(code);
+    // 修改读取文件名 list.js
+    const res = await fetch("./list.js");
+    if(!res.ok) throw new Error("File not found, check filename & path");
+    const rawText = await res.text();
+    linkList = JSON.parse(rawText);
     if(Array.isArray(linkList)){
       linkLoaded = true;
       renderLinks();
     }else{
-      tip.innerHTML = `<span class="err-text">linkList不是数组，检查link.js</span>`;
+      tip.innerHTML = `<span class="err-text">Data is not array</span>`;
     }
   }catch(e){
-    tip.innerHTML = `<span class="err-text">Load error: ${e.message}</span>`;
+    tip.innerHTML = `<span class="err-text">Error: ${e.message}</span>`;
     console.error(e);
   }
 }
