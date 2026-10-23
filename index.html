@@ -3,340 +3,425 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rolling Sky UGC Mod Assets</title>
+<title>Rolling Sky UGC Assets</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%230d1117' /><path d='M4 10.5 6.5 8l2 2 3-3.5V12H4z' fill='%2358a6ff' /></svg>">
 <style>
-@font-face {
-  font-family: 'Sen';
-  src: url('font/sen-bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Sen';
-  src: url('font/sen-regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:"Sen",sans-serif;
-}
-body{
-  background:#111;
-  color:#fff;
-  padding:40px 0 40px 48px;
-}
-/* 左侧菜单列表 */
-.menu-container{
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-  max-width:420px;
-  margin-bottom:40px;
-}
-/* 放大主按钮 */
-.main-btn{
-  width:100%;
-  padding:18px 20px;
-  font-size:19px;
-  border:none;
-  border-radius:10px;
-  background:#2563eb;
-  color:white;
-  cursor:pointer;
-  text-align:left;
-  transition:0.2s;
-}
-.main-btn:hover{
-  background:#1d4ed8;
-}
-.sub-group{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  padding-left:24px;
-  margin-top:8px;
-}
-.sub-btn{
-  padding:14px 16px;
-  font-size:16px;
-  border:none;
-  border-radius:8px;
-  background:#222;
-  color:#ddd;
-  cursor:pointer;
-  text-align:left;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.sub-btn:hover{
-  background:#333;
-}
-.sub-btn img{
-  width:24px;
-  height:24px;
-  object-fit:contain;
-}
-/* 公告区域 */
-.announce-box{
-  max-width:700px;
-  background:#18181b;
-  padding:20px;
-  border-radius:10px;
-  margin-bottom:30px;
-  border:1px solid #333;
-}
-.announce-box h3{
-  margin-bottom:10px;
-  color:#93c5fd;
-}
-/* 下载列表区域（原版下载界面） */
-.download-section{
-  max-width:700px;
-}
-.download-section h3{
-  margin-bottom:16px;
-  font-size:20px;
-}
-.file-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:#18181b;
-  padding:14px 18px;
-  border-radius:8px;
-  margin-bottom:10px;
-}
-.dl-btn{
-  padding:10px 16px;
-  background:#16a34a;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-}
-.dl-btn:hover{
-  background:#15803d;
-}
-/* 弹窗 */
-.modal-wrap{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.75);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-}
-.modal{
-  background:#18181b;
-  padding:28px;
-  border-radius:12px;
-  max-width:560px;
-  width:90%;
-}
-.modal h3{
-  margin-bottom:16px;
-}
-.modal img{
-  max-width:100%;
-  border-radius:6px;
-  margin:14px 0;
-}
-.modal p{
-  margin-bottom:18px;
-  color:#ccc;
-  line-height:1.6;
-}
-.modal a{
-  color:#60a5fa;
-}
-.close-btn{
-  padding:10px 16px;
-  border:none;
-  border-radius:6px;
-  background:#333;
-  color:white;
-  cursor:pointer;
-}
-.load-text{
-  color:#aaa;
-}
+  /* 修复：全部统一使用相对路径，font文件夹和index.html同级 */
+  @font-face {
+    font-family: 'Sen';
+    src: url('font/sen-regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Sen';
+    src: url('font/sen-bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0d1117;
+    --bg-card: #161b22;
+    --bg-hover: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sen', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+  /* ===== Header ===== */
+  .header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .header .sub {
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .header .sub a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  /* ===== Announcement ===== */
+  .announcement {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .announcement-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .announcement-body {
+    white-space: pre-line;
+    color: var(--text);
+  }
+  /* ===== Image Card ===== */
+  .image-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .image-preview {
+    background:
+      linear-gradient(45deg, #1a1f27 25%, transparent 25%),
+      linear-gradient(-45deg, #1a1f27 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #1a1f27 75%),
+      linear-gradient(-45deg, transparent 75%, #1a1f27 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .image-preview img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    display: block;
+  }
+  .image-info {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .image-name {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .image-size {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  /* ===== Download Button ===== */
+  .btn-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    background: #1f6feb;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Sen', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    text-decoration: none;
+  }
+  .btn-download:hover {
+    background: #388bfd;
+  }
+  .btn-download:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .btn-download:disabled:hover {
+    background: #1f6feb;
+  }
+  /* ===== Secondary Button ===== */
+  .btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Sen', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-decoration: none;
+  }
+  .btn-secondary:hover {
+    background: var(--bg-card);
+    border-color: var(--text-dim);
+  }
+  .btn-secondary svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+  /* ===== Tutorial Modal ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+  .modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    width: 600px;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 28px;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+  }
+  .modal-close:hover {
+    color: var(--text);
+  }
+  .modal h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .modal-step {
+    margin-bottom: 20px;
+  }
+  .modal-step-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .modal-step p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .modal-step a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .modal-step a:hover {
+    text-decoration: underline;
+  }
+  .modal img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: block;
+  }
+  .btn-download svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+  /* ===== Footer ===== */
+  .footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
 </style>
 </head>
 <body>
-
-<!-- 左侧主菜单列表 -->
-<div class="menu-container">
-  <button class="main-btn" onclick="location.href='https://sqdldev.github.io/rolling-sky/tileset/'">jump into sqdl download web</button>
-
-  <div>
-    <button class="main-btn" onclick="toggleAuthor()">Author Home</button>
-    <div class="sub-group" id="authorSub" style="display:none">
-      <a class="sub-btn" href="https://space.bilibili.com/1276761356?spm_id_from=333.1007.0.0" target="_blank">
-        <img src="icons/bilibili.png" alt=""> Bilibili
-      </a>
-      <a class="sub-btn" href="https://youtube.com/@qaqa-blackwhitelolqq?si=XZ_wCdgHpNeyVJQE" target="_blank">
-        <img src="icons/youtube.png" alt=""> YouTube
-      </a>
+<div class="container">
+  <div class="header">
+    <h1>Rolling Sky UGC Tileset Download</h1>
+    <div class="sub">
+      <a href="https://github.com/QAQA114514/rolling-sky-ugc-web-mod-assets" target="_blank" rel="noopener">rolling-sky-ugc-web-mod-assets</a>
     </div>
   </div>
-
-  <div>
-    <button class="main-btn" onclick="toggleRelated()">Related Links</button>
-    <div class="sub-group" id="relatedSub" style="display:none">
-      <div id="linkLoadTip">Click to load links...</div>
+  <!-- Announcement -->
+  <div class="announcement" id="announcement" style="display:none">
+    <div class="announcement-label">Announcement</div>
+    <div class="announcement-body" id="announcementBody"></div>
+  </div>
+  <!-- Image -->
+  <div class="image-card">
+    <div class="image-preview">
+      <img src="https://raw.githubusercontent.com/QAQA114514/rolling-sky-ugc-web-mod-assets/main/QAQA-UGC-tileset.png"
+           alt="QAQA-UGC-tileset.png">
+    </div>
+    <div class="image-info">
+      <div>
+        <div class="image-name">QAQA-UGC-tileset.png</div>
+        <div class="image-size" id="fileSize">Loading...</div>
+      </div>
     </div>
   </div>
-
-  <button class="main-btn" onclick="openTutorial()">Tutorial</button>
+  <!-- Download -->
+  <button class="btn-download" id="btnDownload">
+    <svg viewBox="0 0 16 16">
+      <path d="M8 2a.75.75 0 0 1 .75.75v5.69l2.22-2.22a.75.75 0 1 1 1.06 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0l-3.5-3.5a.75.75 0 1 1 1.06-1.06l2.22 2.22V2.75A.75.75 0 0 1 8 2Z" />
+      <path d="M2.75 12a.75.75 0 0 1 .75.75v1.5h9v-1.5a.75.75 0 0 1 1.5 0v2.25a.75.75 0 0 1-.75.75h-10.5A.75.75 0 0 1 2 15v-2.25a.75.75 0 0 1 .75-.75Z" />
+    </svg>
+    <span id="btnText">Download</span>
+  </button>
+  <!-- Open Editor -->
+  <a class="btn-secondary" href="https://sqdldev.github.io/rolling-sky/tileset/" target="_blank" rel="noopener">
+    <svg viewBox="0 0 16 16">
+      <path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.5.75a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0V3.56L8.28 8.28a.75.75 0 0 1-1.06-1.06L12.94 2.5H11a.75.75 0 0 1-.75-.75Z" />
+    </svg>
+    jump into sqdl download web
+  </a>
+  <!-- Tutorial -->
+  <button class="btn-secondary" id="btnTutorial">
+    <svg viewBox="0 0 16 16">
+      <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0Zm0 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2Zm0 2a1 1 0 0 1 1 1v3h2a1 1 0 1 1 0 2H8a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm-1 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" />
+    </svg>
+    Tutorial
+  </button>
+  <div class="footer">
+    Assets served via GitHub
+  </div>
 </div>
-
-<!-- 公告模块 -->
-<div class="announce-box">
-  <h3>Announcement</h3>
-  <div id="announce-content" class="load-text">Loading announcement...</div>
-</div>
-
-<!-- 原版下载界面 -->
-<div class="download-section">
-  <h3>Assets Download List</h3>
-  <div id="fileList" class="load-text">Loading asset files...</div>
-</div>
-
-<!-- 教程弹窗 -->
-<div class="modal-wrap" id="tutorialModal">
+<!-- Tutorial Modal -->
+<div class="modal-overlay" id="tutorialModal">
   <div class="modal">
-    <h3>Tutorial</h3>
-    <p>Download Tiled here: <a href="https://www.mapeditor.org/" target="_blank">Tiled Official Site</a></p>
-    <img src="assets/1.png" alt="guide">
-    <p>Use this image as shown in the picture.</p>
-    <button class="close-btn" onclick="closeTutorial()">Close</button>
+    <button class="modal-close" onclick="closeTutorial()">&times;</button>
+    <h2>Tutorial</h2>
+    <div class="modal-step">
+      <div class="modal-step-label">Step 1</div>
+      <p>Download and install <a href="https://www.mapeditor.org/" target="_blank" rel="noopener">Tiled</a> map editor first.</p>
+    </div>
+    <div class="modal-step">
+      <div class="modal-step-label">Step 2</div>
+      <p>Import the tileset image into Tiled as shown below:</p>
+      <!--修复：改为相对路径assets/1.png，alt文本清理-->
+      <img src="assets/1.png" alt="Tiled import demonstration">
+    </div>
   </div>
 </div>
-
 <script>
-let linkJsLoaded = false;
-
-// 菜单展开
-function toggleAuthor(){
-  const el = document.getElementById("authorSub");
-  el.style.display = el.style.display === "none" ? "flex" : "none";
-}
-
-async function toggleRelated(){
-  const el = document.getElementById("relatedSub");
-  if(el.style.display === "none"){
-    el.style.display = "flex";
-    if(!linkJsLoaded){
-      await loadLinkJS();
-    }else{
-      renderLinks();
-    }
-  }else{
-    el.style.display = "none";
-  }
-}
-
-// 动态加载 link.js
-function loadLinkJS(){
-  return new Promise((resolve, reject)=>{
-    const tip = document.getElementById("linkLoadTip");
-    tip.textContent = "Loading link.js...";
-    const script = document.createElement("script");
-    script.src = "./link.js";
-    script.onload = ()=>{
-      linkJsLoaded = true;
-      renderLinks();
-      resolve();
-    };
-    script.onerror = ()=>{
-      tip.innerHTML = "<span style='color:#f87171'>Failed to load link.js</span>";
-      reject();
-    };
-    document.body.appendChild(script);
-  })
-}
-
-// 渲染link.js链接
-function renderLinks(){
-  const wrap = document.getElementById("relatedSub");
-  if(!window.linkList || !Array.isArray(linkList)){
-    wrap.innerHTML = "<span style='color:#aaa'>linkList is empty or invalid</span>";
-    return;
-  }
-  wrap.innerHTML = "";
-  linkList.forEach(item=>{
-    const a = document.createElement("a");
-    a.className = "sub-btn";
-    a.target = "_blank";
-    a.href = item.url;
-    a.innerHTML = `<img src="${item.icon}" alt=""> ${item.name}`;
-    wrap.appendChild(a);
-  })
-}
-
-// 教程弹窗
-function openTutorial(){
-  document.getElementById("tutorialModal").style.display="flex";
-}
-function closeTutorial(){
-  document.getElementById("tutorialModal").style.display="none";
-}
-
-// ========== 拉取公告 base.txt ==========
-async function loadAnnouncement(){
-  try{
-    const res = await fetch("https://raw.githubusercontent.com/QAQA114514/annoucement/main/base.txt");
-    if(!res.ok) throw new Error();
-    const text = await res.text();
-    document.getElementById("announce-content").innerText = text;
-  }catch(e){
-    document.getElementById("announce-content").innerText = "Announcement load failed.";
-  }
-}
-
-// ========== 资产下载列表 rolling-sky-ugc-web-mod-assets.git ==========
-async function loadAssetList(){
-  const container = document.getElementById("fileList");
-  try{
-    const apiUrl = "https://api.github.com/repos/QAQA114514/rolling-sky-ugc-web-mod-assets/contents";
-    const resp = await fetch(apiUrl);
-    const data = await resp.json();
-    container.innerHTML = "";
-    data.forEach(file=>{
-      if(file.type === "file"){
-        const div = document.createElement("div");
-        div.className = "file-item";
-        div.innerHTML = `
-          <span>${file.name}</span>
-          <button class="dl-btn" onclick="downloadFile('${file.download_url}','${file.name}')">Download</button>
-        `;
-        container.appendChild(div);
+(function() {
+  'use strict';
+  var ANNOUNCEMENT_URL = 'https://raw.githubusercontent.com/QAQA114514/annoucement/main/base.txt';
+  var FILE_URL = 'https://raw.githubusercontent.com/QAQA114514/rolling-sky-ugc-web-mod-assets/main/QAQA-UGC-tileset.png';
+  // Load announcement
+  fetch(ANNOUNCEMENT_URL)
+    .then(function(res) { return res.text(); })
+    .then(function(text) {
+      text = text.trim();
+      if (text) {
+        document.getElementById('announcementBody').textContent = text;
+        document.getElementById('announcement').style.display = 'block';
       }
     })
-  }catch(e){
-    container.innerText = "Asset list load failed.";
-  }
-}
-// 下载文件
-async function downloadFile(url, filename){
-  const res = await fetch(url);
-  const blob = await res.blob();
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = filename;
-  a.click();
-}
-
-// 页面初始化
-window.onload = ()=>{
-  loadAnnouncement();
-  loadAssetList();
-}
+    .catch(function(err) { console.warn('Announcement load failed:', err); });
+  // Get file size
+  fetch(FILE_URL, { method: 'HEAD' })
+    .then(function(res) {
+      var size = parseInt(res.headers.get('content-length') || '0');
+      if (size > 0) {
+        var k = 1024;
+        var sizes = ['B', 'KB', 'MB', 'GB'];
+        var i = Math.floor(Math.log(size) / Math.log(k));
+        document.getElementById('fileSize').textContent =
+          parseFloat((size / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+      }
+    })
+    .catch(function() {
+      document.getElementById('fileSize').textContent = '';
+    });
+  // Download via blob (cross-origin safe)
+  var btn = document.getElementById('btnDownload');
+  var btnText = document.getElementById('btnText');
+  btn.addEventListener('click', function() {
+    btn.disabled = true;
+    btnText.textContent = 'Downloading...';
+    fetch(FILE_URL)
+      .then(function(res) { return res.blob(); })
+      .then(function(blob) {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'QAQA-UGC-tileset.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+        btnText.textContent = 'Downloaded';
+        setTimeout(function() {
+          btn.disabled = false;
+          btnText.textContent = 'Download';
+        }, 2000);
+      })
+      .catch(function(err) {
+        console.error('Download failed:', err);
+        btnText.textContent = 'Failed - retry';
+        btn.disabled = false;
+        setTimeout(function() { btnText.textContent = 'Download'; }, 2000);
+      });
+  });
+  // Tutorial modal
+  var tutorialModal = document.getElementById('tutorialModal');
+  document.getElementById('btnTutorial').addEventListener('click', function() {
+    tutorialModal.classList.add('active');
+  });
+  window.closeTutorial = function() {
+    tutorialModal.classList.remove('active');
+  };
+  tutorialModal.addEventListener('click', function(e) {
+    if (e.target === tutorialModal) closeTutorial();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeTutorial();
+  });
+})();
 </script>
 </body>
 </html>
