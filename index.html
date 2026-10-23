@@ -36,7 +36,7 @@ body{
 }
 .title-main{
   font-family:"BigFont",sans-serif;
-  font-size:42px;
+  font-size:64px;
   margin-bottom:32px;
   letter-spacing:2px;
   color:#ffffff;
@@ -206,6 +206,15 @@ body{
 .err-text{
   color:#f87171;
 }
+/* 固定在页面底部，滚动不会动 */
+.last-update-text{
+  position: fixed;
+  bottom:14px;
+  left:20px;
+  color:#aaa;
+  font-size:14px;
+  z-index:10;
+}
 </style>
 </head>
 <body>
@@ -258,11 +267,34 @@ body{
   </div>
 </div>
 
+<!-- 固定底部文字 -->
+<div class="last-update-text" id="updateTimer">Calculating time since last edit...</div>
+
 <script>
 let linkLoaded = false;
 let linkList = [];
 let authorOpen = false;
 let relatedOpen = false;
+// =========在这里填写上次修改的时间=========
+// 格式：年,月,日,时,分,秒
+const lastEditTime = new Date(2026, 9, 24, 20, 0, 0);
+
+// 计算时间差函数
+function formatTimeDiff(ms) {
+  let sec = Math.floor(ms / 1000);
+  const days = Math.floor(sec / 86400);
+  sec %= 86400;
+  const hours = Math.floor(sec / 3600);
+  sec %= 3600;
+  const mins = Math.floor(sec / 60);
+  sec = sec % 60;
+  return `${days}d ${hours}h ${mins}m ${sec}s since last edit`;
+}
+function updateTimer(){
+  const now = new Date();
+  const diff = now - lastEditTime;
+  document.getElementById("updateTimer").innerText = formatTimeDiff(diff);
+}
 
 // 获取元素真实高度辅助函数
 function getElHeight(el){
@@ -384,6 +416,8 @@ async function downloadFile(url, filename){
 window.onload = ()=>{
   loadAnnouncement();
   loadAssetList();
+  updateTimer();
+  setInterval(updateTimer,1000);
 }
 </script>
 </body>
