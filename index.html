@@ -188,7 +188,7 @@ body{
   <div>
     <button class="main-btn" onclick="toggleRelated()">Related Links</button>
     <div class="sub-group" id="relatedSub" style="display:none">
-      <!-- link.js动态渲染 -->
+      <div id="linkLoadTip">Click to load links...</div>
     </div>
   </div>
 
@@ -218,27 +218,54 @@ body{
   </div>
 </div>
 
-<script src="./link.js"></script>
 <script>
+let linkJsLoaded = false;
+
 // 菜单展开
 function toggleAuthor(){
   const el = document.getElementById("authorSub");
   el.style.display = el.style.display === "none" ? "flex" : "none";
 }
-function toggleRelated(){
+
+async function toggleRelated(){
   const el = document.getElementById("relatedSub");
   if(el.style.display === "none"){
     el.style.display = "flex";
-    renderLinks();
+    if(!linkJsLoaded){
+      await loadLinkJS();
+    }else{
+      renderLinks();
+    }
   }else{
     el.style.display = "none";
   }
 }
+
+// 动态加载 link.js
+function loadLinkJS(){
+  return new Promise((resolve, reject)=>{
+    const tip = document.getElementById("linkLoadTip");
+    tip.textContent = "Loading link.js...";
+    const script = document.createElement("script");
+    script.src = "./link.js";
+    script.onload = ()=>{
+      linkJsLoaded = true;
+      renderLinks();
+      resolve();
+    };
+    script.onerror = ()=>{
+      tip.innerHTML = "<span style='color:#f87171'>Failed to load link.js</span>";
+      reject();
+    };
+    document.body.appendChild(script);
+  })
+}
+
 // 渲染link.js链接
 function renderLinks(){
   const wrap = document.getElementById("relatedSub");
-  if(!window.linkList){
-    wrap.innerHTML = "<span style='color:#aaa'>link.js not found / load failed</span>";
+  if(!window.linkList || !Array.isArray(linkList)){
+    wrap.innerHTML = "<span style='color:#aaa'>linkList is empty or invalid</span>";
     return;
   }
   wrap.innerHTML = "";
@@ -251,6 +278,7 @@ function renderLinks(){
     wrap.appendChild(a);
   })
 }
+
 // 教程弹窗
 function openTutorial(){
   document.getElementById("tutorialModal").style.display="flex";
@@ -259,10 +287,10 @@ function closeTutorial(){
   document.getElementById("tutorialModal").style.display="none";
 }
 
-// ========== 拉取公告 annoucement.git ==========
+// ========== 拉取公告 base.txt ==========
 async function loadAnnouncement(){
   try{
-    const res = await fetch("https://raw.githubusercontent.com/QAQA114514/annoucement/main/announce.txt");
+    const res = await fetch("https://raw.githubusercontent.com/QAQA114514/annoucement/main/base.txt");
     if(!res.ok) throw new Error();
     const text = await res.text();
     document.getElementById("announce-content").innerText = text;
