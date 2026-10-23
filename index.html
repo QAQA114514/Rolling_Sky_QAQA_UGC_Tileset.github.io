@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rolling Sky UGC Mod Assets</title>
+<title>Rolling Sky QAQA Tileset</title>
 <style>
+@font-face {
+  font-family: 'BigFont';
+  src: url('font/bigfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 @font-face {
   font-family: 'Sen';
   src: url('font/sen-bold.ttf') format('truetype');
@@ -28,6 +34,13 @@ body{
   color:#fff;
   padding:40px 0 40px 48px;
 }
+.title-main{
+  font-family:"BigFont",sans-serif;
+  font-size:42px;
+  margin-bottom:32px;
+  letter-spacing:2px;
+  color:#ffffff;
+}
 .menu-container{
   display:flex;
   flex-direction:column;
@@ -45,17 +58,25 @@ body{
   color:white;
   cursor:pointer;
   text-align:left;
-  transition:0.2s;
+  transition: background 0.25s ease;
 }
 .main-btn:hover{
   background:#1d4ed8;
+}
+/* 折叠容器：带框 + 高度平滑动画 */
+.collapse-wrap{
+  overflow:hidden;
+  border:1px solid #333;
+  border-radius:0 0 10px 10px;
+  background:#18181b;
+  max-width:420px;
+  transition: height 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .sub-group{
   display:flex;
   flex-direction:column;
   gap:12px;
-  padding-left:24px;
-  margin-top:8px;
+  padding:16px 20px;
 }
 .sub-btn{
   padding:14px 16px;
@@ -69,6 +90,7 @@ body{
   display:flex;
   align-items:center;
   gap:10px;
+  transition: background 0.2s ease;
 }
 .sub-btn:hover{
   background:#333;
@@ -105,6 +127,11 @@ body{
   padding:14px 18px;
   border-radius:8px;
   margin-bottom:10px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.file-item:hover{
+  background:#202026;
+  transform: translateY(-2px);
 }
 .dl-btn{
   padding:10px 16px;
@@ -113,6 +140,7 @@ body{
   border:none;
   border-radius:6px;
   cursor:pointer;
+  transition: background 0.2s ease;
 }
 .dl-btn:hover{
   background:#15803d;
@@ -125,6 +153,12 @@ body{
   align-items:center;
   justify-content:center;
   z-index:999;
+  opacity:0;
+  transition: opacity 0.3s ease;
+}
+.modal-wrap.open{
+  display:flex;
+  opacity:1;
 }
 .modal{
   background:#18181b;
@@ -132,6 +166,11 @@ body{
   border-radius:12px;
   max-width:560px;
   width:90%;
+  transform: scale(0.92);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.modal-wrap.open .modal{
+  transform: scale(1);
 }
 .modal h3{
   margin-bottom:16px;
@@ -156,6 +195,10 @@ body{
   background:#333;
   color:white;
   cursor:pointer;
+  transition: background 0.2s ease;
+}
+.close-btn:hover{
+  background:#444;
 }
 .load-text{
   color:#aaa;
@@ -166,23 +209,29 @@ body{
 </style>
 </head>
 <body>
+<h1 class="title-main">ROLLING SKY QAQA TILESET</h1>
+
 <div class="menu-container">
   <div>
     <button class="main-btn" onclick="toggleAuthor()">Author Home</button>
-    <div class="sub-group" id="authorSub" style="display:none">
-      <a class="sub-btn" href="https://space.bilibili.com/1276761356?spm_id_from=333.1007.0.0" target="_blank">
-        <img src="icons/bilibili.png" alt=""> Bilibili
-      </a>
-      <a class="sub-btn" href="https://youtube.com/@qaqa-blackwhitelolqq?si=XZ_wCdgHpNeyVJQE" target="_blank">
-        <img src="icons/youtube.png" alt=""> YouTube
-      </a>
+    <div class="collapse-wrap" id="authorCollapse" style="height:0;">
+      <div class="sub-group" id="authorSub">
+        <a class="sub-btn" href="https://space.bilibili.com/1276761356?spm_id_from=333.1007.0.0" target="_blank">
+          <img src="icons/bilibili.png" alt=""> Bilibili
+        </a>
+        <a class="sub-btn" href="https://youtube.com/@qaqa-blackwhitelolqq?si=XZ_wCdgHpNeyVJQE" target="_blank">
+          <img src="icons/youtube.png" alt=""> YouTube
+        </a>
+      </div>
     </div>
   </div>
 
   <div>
     <button class="main-btn" onclick="toggleRelated()">Related Links</button>
-    <div class="sub-group" id="relatedSub" style="display:none">
-      <div id="linkTip">Click to load links...</div>
+    <div class="collapse-wrap" id="relatedCollapse" style="height:0;">
+      <div class="sub-group" id="relatedSub">
+        <div id="linkTip">Click to load links...</div>
+      </div>
     </div>
   </div>
 
@@ -212,17 +261,38 @@ body{
 <script>
 let linkLoaded = false;
 let linkList = [];
+let authorOpen = false;
+let relatedOpen = false;
+
+// 获取元素真实高度辅助函数
+function getElHeight(el){
+  const prev = el.style.display;
+  el.style.display = 'flex';
+  const h = el.scrollHeight;
+  el.style.display = prev;
+  return h;
+}
 
 function toggleAuthor(){
-  const el = document.getElementById("authorSub");
-  el.style.display = el.style.display === "none" ? "flex" : "none";
+  const wrap = document.getElementById("authorCollapse");
+  const content = document.getElementById("authorSub");
+  authorOpen = !authorOpen;
+  if(authorOpen){
+    wrap.style.height = getElHeight(content)+"px";
+  }else{
+    wrap.style.height = "0px";
+  }
 }
 
 async function toggleRelated(){
-  const wrap = document.getElementById("relatedSub");
-  wrap.style.display = wrap.style.display === "none" ? "flex" : "none";
-  if(wrap.style.display === "flex" && !linkLoaded){
-    await fetchLinkData();
+  const wrap = document.getElementById("relatedCollapse");
+  const content = document.getElementById("relatedSub");
+  relatedOpen = !relatedOpen;
+  if(relatedOpen){
+    if(!linkLoaded) await fetchLinkData();
+    wrap.style.height = getElHeight(content)+"px";
+  }else{
+    wrap.style.height = "0px";
   }
 }
 
@@ -260,10 +330,12 @@ function renderLinks(){
 }
 
 function openTutorial(){
-  document.getElementById("tutorialModal").style.display="flex";
+  const modal = document.getElementById("tutorialModal");
+  modal.classList.add("open");
 }
 function closeTutorial(){
-  document.getElementById("tutorialModal").style.display="none";
+  const modal = document.getElementById("tutorialModal");
+  modal.classList.remove("open");
 }
 
 async function loadAnnouncement(){
