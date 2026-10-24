@@ -8,5 +8,10 @@
     "name": "SQDLDEV s tileset Download Link",
     "url": "https://sqdldev.github.io/rolling-sky/tileset/",
     "icon": "icons/ball10.png"
-  }
+  },
+  {
+    "name": "QAQA s tileset Baidu Netdisk Link",
+    "url": "https://pan.baidu.com/s/16GEASHu1N9glnDobkuSOZw?pwd=qaqa",
+    "icon": "icons/baidu.png"
+  },
 ]
