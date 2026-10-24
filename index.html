@@ -29,31 +29,6 @@
   box-sizing:border-box;
   font-family:"Sen",sans-serif;
 }
-/* 顶部语言栏 */
-.lang-bar{
-  width:100%;
-  height:48px;
-  background:#111111;
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  padding:0 24px;
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
-.lang-switch{
-  background:#222;
-  color:#fff;
-  border:1px solid #444;
-  padding:6px 14px;
-  border-radius:6px;
-  cursor:pointer;
-  transition:0.2s;
-}
-.lang-switch:hover{
-  background:#333;
-}
 body{
   color:#fff;
   padding:40px 0 40px 48px;
@@ -335,16 +310,12 @@ body::before{
 </style>
 </head>
 <body>
-<div class="lang-bar">
-  <button class="lang-switch" id="langBtn">中文</button>
-</div>
-
 <h1 class="title-main">ROLLING SKY QAQA TILESET</h1>
 
 <div class="row-wrap">
   <div class="menu-container">
     <div>
-      <button class="main-btn" onclick="toggleAuthor(event)" data-en="Author Home" data-cn="作者主页">Author Home</button>
+      <button class="main-btn" onclick="toggleAuthor(event)">Author Home</button>
       <div class="collapse-wrap" id="authorCollapse" style="height:0;">
         <div class="sub-group" id="authorSub">
           <a class="sub-btn" href="https://space.bilibili.com/1276761356?spm_id_from=333.1007.0.0" target="_blank">
@@ -358,37 +329,36 @@ body::before{
     </div>
 
     <div>
-      <button class="main-btn" onclick="toggleRelated(event)" data-en="Related Links" data-cn="相关链接">Related Links</button>
+      <button class="main-btn" onclick="toggleRelated(event)">Related Links</button>
       <div class="collapse-wrap" id="relatedCollapse" style="height:0;">
         <div class="sub-group" id="relatedSub">
-          <div id="linkTip" data-en="Click to load links..." data-cn="点击加载链接...">Click to load links...</div>
+          <div id="linkTip">Click to load links...</div>
         </div>
       </div>
     </div>
 
-    <button class="main-btn" onclick="openTutorial(event)" data-en="Tutorial" data-cn="教程">Tutorial</button>
+    <button class="main-btn" onclick="openTutorial(event)">Tutorial</button>
   </div>
   <img class="side-img" src="assets/a.png" alt="Side preview">
 </div>
 
 <div class="announce-box">
-  <h3 data-en="Announcement" data-cn="公告">Announcement</h3>
-  <div id="announce-content" class="load-text" data-en="Loading announcement..." data-cn="正在加载公告...">Loading announcement...</div>
+  <h3>Announcement</h3>
+  <div id="announce-content" class="load-text">Loading announcement...</div>
 </div>
 
 <div class="download-section">
-  <h3 data-en="Assets Download List" data-cn="资源下载列表">Assets Download List</h3>
-  <div id="fileList" class="load-text" data-en="Loading download list..." data-cn="正在加载下载列表...">Loading download list...</div>
+  <h3>Assets Download List</h3>
+  <div id="fileList" class="load-text">Loading download list...</div>
 </div>
 
 <div class="modal-wrap" id="tutorialModal">
   <div class="modal">
-    <h3 data-en="Tutorial" data-cn="教程">Tutorial</h3>
-    <p data-en="Download Tiled here: " data-cn="在这里下载Tiled：">Download Tiled here: </p>
-    <a href="https://www.mapeditor.org/" target="_blank">Tiled Official Site</a>
+    <h3>Tutorial</h3>
+    <p>Download Tiled here: <a href="https://www.mapeditor.org/" target="_blank">Tiled Official Site</a></p>
     <img src="assets/1.png" alt="guide">
-    <p data-en="Use this image as shown in the picture." data-cn="如图所示来使用这张图片">Use this image as shown in the picture.</p>
-    <button class="close-btn" onclick="closeTutorial()" data-en="Close" data-cn="关闭">Close</button>
+    <p>Use this image as shown in the picture.</p>
+    <button class="close-btn" onclick="closeTutorial()">Close</button>
   </div>
 </div>
 
@@ -396,32 +366,10 @@ body::before{
 
 <script>
 let linkLoaded = false;
-let linkList = [];
 let downloadList = [];
 let authorOpen = false;
 let relatedOpen = false;
 const lastEditTime = new Date(2026, 9, 24, 20, 0, 0);
-
-// 语言缓存 & 切换
-const langBtn = document.getElementById("langBtn");
-let currentLang = localStorage.getItem("lang") || "en";
-
-function applyLang(){
-  if(currentLang === "en"){
-    langBtn.textContent = "中文";
-  }else{
-    langBtn.textContent = "English";
-  }
-  document.querySelectorAll("[data-en]").forEach(el=>{
-    el.textContent = currentLang === "en" ? el.dataset.en : el.dataset.cn;
-  })
-}
-langBtn.onclick = ()=>{
-  currentLang = currentLang === "en" ? "cn" : "en";
-  localStorage.setItem("lang", currentLang);
-  applyLang();
-}
-applyLang();
 
 function clickPop(btn){
   btn.style.transform = "scale(0.97)";
@@ -437,8 +385,7 @@ function formatTimeDiff(ms) {
   const hours = Math.floor(sec / 3600);
   sec %= 3600;
   const mins = Math.floor(sec / 60);
-  sec = sec % 60;
-  return `${days}d ${hours}h ${mins}m ${sec}s since last edit`;
+  return `${days}d ${hours}h ${mins}m ${sec%60}s since last edit`;
 }
 function updateTimer(){
   const now = new Date();
@@ -497,20 +444,23 @@ async function toggleRelated(e){
 
 async function fetchLinkData(){
   const tip = document.getElementById("linkTip");
-  tip.textContent = currentLang === "en" ? "Loading list.js..." : "正在加载链接列表...";
+  tip.textContent = "Loading list.js...";
   try{
     const res = await fetch("./list.js");
     if(!res.ok) throw new Error("File not found");
     const rawText = await res.text();
-    linkList = JSON.parse(rawText);
+    const script = document.createElement('script');
+    script.textContent = rawText;
+    document.body.appendChild(script);
+    script.remove();
     if(Array.isArray(linkList)){
       linkLoaded = true;
       renderLinks();
     }else{
-      tip.innerHTML = `<span class="err-text">${currentLang === "en" ? "Data is not array" : "数据不是数组"}</span>`;
+      tip.innerHTML = `<span class="err-text">Data is not array</span>`;
     }
   }catch(e){
-    tip.innerHTML = `<span class="err-text">${currentLang === "en" ? "Error: " : "错误："}${e.message}</span>`;
+    tip.innerHTML = `<span class="err-text">Error: ${e.message}</span>`;
     console.error(e);
   }
 }
@@ -548,23 +498,20 @@ async function loadAnnouncement(){
     const text = await res.text();
     document.getElementById("announce-content").innerText = text;
   }catch(e){
-    document.getElementById("announce-content").innerText = currentLang === "en" ? "Announcement load failed." : "公告加载失败。";
+    document.getElementById("announce-content").innerText = "Announcement load failed.";
   }
 }
 
-// 下载逻辑
 function downloadFileDirect(url){
   window.open(url,"_blank");
 }
 
-// 读取download.js渲染下载列表
 async function loadDownloadList(){
   const container = document.getElementById("fileList");
   try{
     const res = await fetch("./download.js");
     if(!res.ok) throw new Error();
     const raw = await res.text();
-    // 执行js拿到downloadList变量
     const script = document.createElement('script');
     script.textContent = raw;
     document.body.appendChild(script);
@@ -587,7 +534,7 @@ async function loadDownloadList(){
       }, 120 + i * 80);
     })
   }catch(e){
-    container.innerText = currentLang === "en" ? "Download list load failed." : "下载列表加载失败。";
+    container.innerText = "Download list load failed.";
     console.error(e);
   }
 }
