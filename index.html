@@ -30,9 +30,26 @@
   font-family:"Sen",sans-serif;
 }
 body{
-  background:#111;
+  /* 移除纯色背景，交给伪元素处理背景+蒙版 */
   color:#fff;
   padding:40px 0 40px 48px;
+  position: relative;
+  min-height: 100vh;
+  background: transparent;
+}
+/* 背景图 + 黑色蒙版层 */
+body::before{
+  content:"";
+  position: fixed;
+  inset:0;
+  z-index:-1;
+  background-image: url("assets/2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  /* 70%黑色蒙版 */
+  background-color: rgba(0,0,0,0.7);
+  background-blend-mode: multiply;
 }
 .title-main{
   font-family:"BigFont",sans-serif;
