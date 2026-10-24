@@ -30,7 +30,6 @@
   font-family:"Sen",sans-serif;
 }
 body{
-  /* 移除纯色背景，交给伪元素处理背景+蒙版 */
   color:#fff;
   padding:40px 0 40px 48px;
   position: relative;
@@ -47,7 +46,6 @@ body::before{
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-  /* 70%黑色蒙版 */
   background-color: rgba(0,0,0,0.7);
   background-blend-mode: multiply;
 }
@@ -58,12 +56,27 @@ body::before{
   letter-spacing:2px;
   color:#ffffff;
 }
+/* 左右容器：按钮列表 + 右侧图片 */
+.row-wrap{
+  display:flex;
+  gap:40px;
+  align-items:flex‑start;
+  flex-wrap:wrap;
+  margin-bottom:40px;
+}
 .menu-container{
   display:flex;
   flex-direction:column;
   gap:18px;
   max-width:420px;
-  margin-bottom:40px;
+}
+.side-img{
+  max-height:420px;
+  max-width:450px;
+  width:auto;
+  height:auto;
+  border-radius:12px;
+  object-fit:contain;
 }
 .main-btn{
   width:100%;
@@ -87,7 +100,7 @@ body::before{
   border-radius:0 0 10px 10px;
   background:#18181b;
   max-width:420px;
-  transition: height 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: height 0.35s cubic‑bezier(0.22, 1, 0.36, 1);
 }
 .sub-group{
   display:flex;
@@ -184,7 +197,7 @@ body::before{
   max-width:560px;
   width:90%;
   transform: scale(0.92);
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.3s cubic‑bezier(0.22, 1, 0.36, 1);
 }
 .modal-wrap.open .modal{
   transform: scale(1);
@@ -237,31 +250,35 @@ body::before{
 <body>
 <h1 class="title-main">ROLLING SKY QAQA TILESET</h1>
 
-<div class="menu-container">
-  <div>
-    <button class="main-btn" onclick="toggleAuthor()">Author Home</button>
-    <div class="collapse-wrap" id="authorCollapse" style="height:0;">
-      <div class="sub-group" id="authorSub">
-        <a class="sub-btn" href="https://space.bilibili.com/1276761356?spm_id_from=333.1007.0.0" target="_blank">
-          <img src="icons/bilibili.png" alt=""> Bilibili
-        </a>
-        <a class="sub-btn" href="https://youtube.com/@qaqa-blackwhitelolqq?si=XZ_wCdgHpNeyVJQE" target="_blank">
-          <img src="icons/youtube.png" alt=""> YouTube
-        </a>
+<div class="row-wrap">
+  <div class="menu-container">
+    <div>
+      <button class="main-btn" onclick="toggleAuthor()">Author Home</button>
+      <div class="collapse-wrap" id="authorCollapse" style="height:0;">
+        <div class="sub-group" id="authorSub">
+          <a class="sub-btn" href="https://space.bilibili.com/1276761356?spm_id_from=333.1007.0.0" target="_blank">
+            <img src="icons/bilibili.png" alt=""> Bilibili
+          </a>
+          <a class="sub-btn" href="https://youtube.com/@qaqa-blackwhitelolqq?si=XZ_wCdgHpNeyVJQE" target="_blank">
+            <img src="icons/youtube.png" alt=""> YouTube
+          </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div>
-    <button class="main-btn" onclick="toggleRelated()">Related Links</button>
-    <div class="collapse-wrap" id="relatedCollapse" style="height:0;">
-      <div class="sub-group" id="relatedSub">
-        <div id="linkTip">Click to load links...</div>
+    <div>
+      <button class="main-btn" onclick="toggleRelated()">Related Links</button>
+      <div class="collapse-wrap" id="relatedCollapse" style="height:0;">
+        <div class="sub-group" id="relatedSub">
+          <div id="linkTip">Click to load links...</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <button class="main-btn" onclick="openTutorial()">Tutorial</button>
+    <button class="main-btn" onclick="openTutorial()">Tutorial</button>
+  </div>
+  <!-- 按钮列表右侧图片 assets/a.png -->
+  <img class="side-img" src="assets/a.png" alt="Side preview">
 </div>
 
 <div class="announce-box">
@@ -401,17 +418,17 @@ async function loadAnnouncement(){
 async function loadAssetList(){
   const container = document.getElementById("fileList");
   try{
-    const apiUrl = "https://api.github.com/repos/QAQA114514/rolling-sky-ugc-web-mod-assets/contents";
+    const apiUrl = "https://api.github.com/repos/QAQA114514/rolling‑sky‑ugc‑web‑mod‑assets/contents";
     const resp = await fetch(apiUrl);
     const data = await resp.json();
     container.innerHTML = "";
     data.forEach(file=>{
       if(file.type === "file"){
         const div = document.createElement("div");
-        div.className = "file-item";
+        div.className = "file‑item";
         div.innerHTML = `
           <span>${file.name}</span>
-          <button class="dl-btn" onclick="downloadFile('${file.download_url}','${file.name}')">Download</button>
+          <button class="dl‑btn" onclick="downloadFile('${file.download_url}','${file.name}')">Download</button>
         `;
         container.appendChild(div);
       }
