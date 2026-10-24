@@ -11,7 +11,7 @@
   },
   {
     "name": "QAQA s tileset Baidu Netdisk Link",
-    "url": "https://pan.baidu.com/s/16GEASHu1N9glnDobkuSOZw?pwd=qaqa",
+    "url": "https://pan.baidu.com/s/1eOKUBCON5hRAxi89LZHKnQ",
     "icon": "icons/baidu.png"
   }
 ]
