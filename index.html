@@ -491,14 +491,23 @@ async function loadAnnouncement(){
   }
 }
 
-// 直接下载函数
-function downloadFileDirect(url, filename){
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename || "download";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+// 使用cors‑anywhere代理绕过跨域，点击直接下载，不会新开页面
+async function downloadFileDirect(rawUrl, filename){
+  const proxyUrl = "https://corsproxy.io/?" + rawUrl;
+  try{
+    const resp = await fetch(proxyUrl);
+    const blob = await resp.blob();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  }catch(err){
+    alert("Download failed, network/proxy error");
+    console.error(err);
+  }
 }
 
 async function loadAssetList(){
