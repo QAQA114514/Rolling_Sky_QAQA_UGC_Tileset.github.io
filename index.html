@@ -215,15 +215,6 @@ body::before{
   transform:translateY(-3px);
   box-shadow: 0 10px 24px rgba(0,0,0,0.25);
 }
-.file-item-left{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.file-item-left img{
-  width:26px;
-  height:26px;
-}
 .dl-btn{
   padding:11px 18px;
   background:#16a34a;
@@ -311,7 +302,6 @@ body::before{
 </head>
 <body>
 <h1 class="title-main">ROLLING SKY QAQA TILESET</h1>
-
 <div class="row-wrap">
   <div class="menu-container">
     <div>
@@ -327,7 +317,6 @@ body::before{
         </div>
       </div>
     </div>
-
     <div>
       <button class="main-btn" onclick="toggleRelated(event)">Related Links</button>
       <div class="collapse-wrap" id="relatedCollapse" style="height:0;">
@@ -336,22 +325,18 @@ body::before{
         </div>
       </div>
     </div>
-
     <button class="main-btn" onclick="openTutorial(event)">Tutorial</button>
   </div>
   <img class="side-img" src="assets/a.png" alt="Side preview">
 </div>
-
 <div class="announce-box">
   <h3>Announcement</h3>
   <div id="announce-content" class="load-text">Loading announcement...</div>
 </div>
-
 <div class="download-section">
   <h3>Assets Download List</h3>
-  <div id="fileList" class="load-text">Loading download list...</div>
+  <div id="fileList" class="load-text">Loading asset files...</div>
 </div>
-
 <div class="modal-wrap" id="tutorialModal">
   <div class="modal">
     <h3>Tutorial</h3>
@@ -361,23 +346,19 @@ body::before{
     <button class="close-btn" onclick="closeTutorial()">Close</button>
   </div>
 </div>
-
 <div class="last-update-text" id="updateTimer">Calculating time since last edit...</div>
-
 <script>
 let linkLoaded = false;
-let downloadList = [];
+let linkList = [];
 let authorOpen = false;
 let relatedOpen = false;
 const lastEditTime = new Date(2026, 9, 24, 20, 0, 0);
-
 function clickPop(btn){
   btn.style.transform = "scale(0.97)";
   setTimeout(()=>{
     btn.style.transform = "";
   }, 120);
 }
-
 function formatTimeDiff(ms) {
   let sec = Math.floor(ms / 1000);
   const days = Math.floor(sec / 86400);
@@ -385,14 +366,14 @@ function formatTimeDiff(ms) {
   const hours = Math.floor(sec / 3600);
   sec %= 3600;
   const mins = Math.floor(sec / 60);
-  return `${days}d ${hours}h ${mins}m ${sec%60}s since last edit`;
+  sec = sec % 60;
+  return `${days}d ${hours}h ${mins}m ${sec}s since last edit`;
 }
 function updateTimer(){
   const now = new Date();
   const diff = now - lastEditTime;
   document.getElementById("updateTimer").innerText = formatTimeDiff(diff);
 }
-
 function getElHeight(el){
   const prev = el.style.display;
   el.style.display = 'flex';
@@ -400,7 +381,6 @@ function getElHeight(el){
   el.style.display = prev;
   return h;
 }
-
 function fadeInSubButtons(container){
   const buttons = container.querySelectorAll(".sub-btn");
   buttons.forEach((btn, i)=>{
@@ -410,7 +390,6 @@ function fadeInSubButtons(container){
     }, 60 + i * 55);
   });
 }
-
 function toggleAuthor(e){
   clickPop(e.currentTarget);
   const wrap = document.getElementById("authorCollapse");
@@ -425,7 +404,6 @@ function toggleAuthor(e){
     wrap.style.height = "0px";
   }
 }
-
 async function toggleRelated(e){
   clickPop(e.currentTarget);
   const wrap = document.getElementById("relatedCollapse");
@@ -441,18 +419,14 @@ async function toggleRelated(e){
     wrap.style.height = "0px";
   }
 }
-
 async function fetchLinkData(){
   const tip = document.getElementById("linkTip");
   tip.textContent = "Loading list.js...";
   try{
     const res = await fetch("./list.js");
-    if(!res.ok) throw new Error("File not found");
+    if(!res.ok) throw new Error("File not found, check filename & path");
     const rawText = await res.text();
-    const script = document.createElement('script');
-    script.textContent = rawText;
-    document.body.appendChild(script);
-    script.remove();
+    linkList = JSON.parse(rawText);
     if(Array.isArray(linkList)){
       linkLoaded = true;
       renderLinks();
@@ -464,7 +438,6 @@ async function fetchLinkData(){
     console.error(e);
   }
 }
-
 function renderLinks(){
   const wrap = document.getElementById("relatedSub");
   wrap.innerHTML = "";
@@ -480,7 +453,6 @@ function renderLinks(){
     }, 80 + index * 60);
   })
 }
-
 function openTutorial(e){
   clickPop(e.currentTarget);
   const modal = document.getElementById("tutorialModal");
@@ -490,7 +462,6 @@ function closeTutorial(){
   const modal = document.getElementById("tutorialModal");
   modal.classList.remove("open");
 }
-
 async function loadAnnouncement(){
   try{
     const res = await fetch("https://raw.githubusercontent.com/QAQA114514/annoucement/main/base.txt");
@@ -502,46 +473,40 @@ async function loadAnnouncement(){
   }
 }
 
-function downloadFileDirect(url){
-  window.open(url,"_blank");
+// 修复：直接新开标签，浏览器原生下载，不会损坏图片文件
+function downloadFileDirect(rawUrl){
+  window.open(rawUrl,"_blank");
 }
 
-async function loadDownloadList(){
+async function loadAssetList(){
   const container = document.getElementById("fileList");
   try{
-    const res = await fetch("./download.js");
-    if(!res.ok) throw new Error();
-    const raw = await res.text();
-    const script = document.createElement('script');
-    script.textContent = raw;
-    document.body.appendChild(script);
-    script.remove();
-
+    const apiUrl = "https://api.github.com/repos/QAQA114514/rolling-sky-ugc-web-mod-assets/contents";
+    const resp = await fetch(apiUrl);
+    const data = await resp.json();
     container.innerHTML = "";
-    downloadList.forEach((item, i)=>{
-      const div = document.createElement("div");
-      div.className = "file-item";
-      div.innerHTML = `
-        <div class="file-item-left">
-          <img src="${item.icon}" alt="">
-          <span>${item.name}</span>
-        </div>
-        <button class="dl-btn" onclick="downloadFileDirect('${item.url}')">Download</button>
-      `;
-      container.appendChild(div);
-      setTimeout(()=>{
-        div.classList.add("show");
-      }, 120 + i * 80);
+    data.forEach((file, i)=>{
+      if(file.type === "file"){
+        const div = document.createElement("div");
+        div.className = "file-item";
+        div.innerHTML = `
+          <span>${file.name}</span>
+          <button class="dl-btn" onclick="downloadFileDirect('${file.download_url}')">Download</button>
+        `;
+        container.appendChild(div);
+        setTimeout(()=>{
+          div.classList.add("show");
+        }, 120 + i * 80);
+      }
     })
   }catch(e){
-    container.innerText = "Download list load failed.";
-    console.error(e);
+    container.innerText = "Asset list load failed.";
   }
 }
 
 window.onload = ()=>{
   loadAnnouncement();
-  loadDownloadList();
+  loadAssetList();
   updateTimer();
   setInterval(updateTimer,1000);
 }
