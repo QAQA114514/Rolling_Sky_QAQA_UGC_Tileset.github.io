@@ -10,12 +10,12 @@
     "icon": "icons/ball10.png"
   },
   {
-    "name": "QAQA s tileset Baidu Netdisk Link (pass = qaqa)",
+    "name": "QAQA s tileset Baidu Netdisk Link (pass = qaqa) 1.4.0",
     "url": " https://pan.baidu.com/s/1f3JeYvd5y9KjzxfKosef5w",
     "icon": "icons/baidu.png"
   },
   {
-    "name": "QAQA s tileset LanZou Cloud Link (pass = apzo)",
+    "name": "QAQA s tileset LanZou Cloud Link (pass = apzo) 1.4.0",
     "url": "https://wwbwg.lanzouv.com/izP5J4da4gha",
     "icon": "icons/lanzou.png"
   }
