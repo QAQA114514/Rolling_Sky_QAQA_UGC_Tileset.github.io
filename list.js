@@ -10,7 +10,12 @@
     "icon": "icons/ball10.png"
   },
   {
-    "name": "QAQA s tileset Baidu Netdisk Link",
+    "name": "QAQA s tileset Baidu Netdisk Link (pass = qaqa)",
+    "url": "https://pan.baidu.com/s/1eOKUBCON5hRAxi89LZHKnQ",
+    "icon": "icons/baidu.png"
+  },
+  {
+    "name": "QAQA s tileset Baidu Netdisk Link (pass = qaqa)",
     "url": "https://pan.baidu.com/s/1eOKUBCON5hRAxi89LZHKnQ",
     "icon": "icons/baidu.png"
   }
