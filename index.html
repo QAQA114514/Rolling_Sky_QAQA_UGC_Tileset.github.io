@@ -126,6 +126,15 @@ body::before{
 .main-btn:active{
   transform:translateX(2px) scale(0.996);
 }
+/* 新增绿色备用下载按钮样式 */
+.download-other-btn{
+  background:#16a34a;
+  box-shadow: 0 6px 14px rgba(22, 163, 74, 0.25);
+}
+.download-other-btn:hover{
+  background:#15803d;
+  box-shadow: 0 10px 20px rgba(22, 163, 74, 0.35);
+}
 .collapse-wrap{
   overflow:hidden;
   border:1px solid #333;
@@ -337,6 +346,17 @@ body::before{
   <h3>Assets Download List</h3>
   <div id="fileList" class="load-text">Loading asset files...</div>
 </div>
+
+<!-- 新增：other ways to download 绿色折叠 -->
+<div style="margin-top:20px;">
+  <button class="main-btn download-other-btn" onclick="toggleOtherDownload(event)">other ways to download</button>
+  <div class="collapse-wrap" id="otherDownloadCollapse" style="height:0;">
+    <div class="sub-group" id="otherDownloadSub">
+      <div id="otherDownloadTip">No alternative download links</div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-wrap" id="tutorialModal">
   <div class="modal">
     <h3>Tutorial</h3>
@@ -352,6 +372,7 @@ let linkLoaded = false;
 let linkList = [];
 let authorOpen = false;
 let relatedOpen = false;
+let otherDownloadOpen = false; //新增状态
 const lastEditTime = new Date(2026, 9, 24, 20, 0, 0);
 function clickPop(btn){
   btn.style.transform = "scale(0.97)";
@@ -419,6 +440,23 @@ async function toggleRelated(e){
     wrap.style.height = "0px";
   }
 }
+//新增备用下载折叠开关
+function toggleOtherDownload(e){
+  clickPop(e.currentTarget);
+  const wrap = document.getElementById("otherDownloadCollapse");
+  const content = document.getElementById("otherDownloadSub");
+  otherDownloadOpen = !otherDownloadOpen;
+  if(otherDownloadOpen){
+    if(!linkLoaded) fetchLinkData();
+    wrap.style.height = getElHeight(content) + "px";
+    wrap.classList.add("open");
+    fadeInSubButtons(content);
+  }else{
+    wrap.classList.remove("open");
+    wrap.style.height = "0px";
+  }
+}
+
 async function fetchLinkData(){
   const tip = document.getElementById("linkTip");
   tip.textContent = "Loading list.js...";
@@ -438,21 +476,48 @@ async function fetchLinkData(){
     console.error(e);
   }
 }
+
+// 修改分流渲染函数
 function renderLinks(){
-  const wrap = document.getElementById("relatedSub");
-  wrap.innerHTML = "";
+  const wrapRelated = document.getElementById("relatedSub");
+  const wrapOther = document.getElementById("otherDownloadSub");
+
+  wrapRelated.innerHTML = "";
+  wrapOther.innerHTML = "";
+
+  let otherHasItem = false;
+  let relatedHasItem = false;
+
   linkList.forEach((item, index)=>{
     const a = document.createElement("a");
     a.className = "sub-btn";
     a.target = "_blank";
     a.href = item.url;
     a.innerHTML = `<img src="${item.icon}" alt=""> ${item.name}`;
-    wrap.appendChild(a);
-    setTimeout(()=>{
-      a.classList.add("show");
-    }, 80 + index * 60);
+
+    if(item.d === true){
+      wrapOther.appendChild(a);
+      otherHasItem = true;
+      setTimeout(()=>{
+        a.classList.add("show");
+      }, 80 + index * 60);
+    }else{
+      wrapRelated.appendChild(a);
+      relatedHasItem = true;
+      setTimeout(()=>{
+        a.classList.add("show");
+      }, 80 + index * 60);
+    }
   })
+
+  if(!relatedHasItem){
+    wrapRelated.innerHTML = `<div class="load-text">No related links available</div>`;
+  }
+  if(!otherHasItem){
+    wrapOther.innerHTML = `<div class="load-text">No alternative download links</div>`;
+  }
 }
+
 function openTutorial(e){
   clickPop(e.currentTarget);
   const modal = document.getElementById("tutorialModal");
@@ -472,12 +537,10 @@ async function loadAnnouncement(){
     document.getElementById("announce-content").innerText = "Announcement load failed.";
   }
 }
-
 // 修复：直接新开标签，浏览器原生下载，不会损坏图片文件
 function downloadFileDirect(rawUrl){
   window.open(rawUrl,"_blank");
 }
-
 async function loadAssetList(){
   const container = document.getElementById("fileList");
   try{
@@ -503,7 +566,6 @@ async function loadAssetList(){
     container.innerText = "Asset list load failed.";
   }
 }
-
 window.onload = ()=>{
   loadAnnouncement();
   loadAssetList();
