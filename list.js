@@ -13,14 +13,8 @@
   
   },
   {
-    "name": "QAQA s tileset Baidu Netdisk Link (not open)",
-    "url": "",
-    "icon": "icons/baidu.png",
-    "d": true
-  },
-  {
-    "name": "QAQA s tileset LanZou Cloud Link (pass = 21o7) 1.4.4",
-    "url": "https://wwbwg.lanzouv.com/iabAK4dmn0xg",
+    "name": "QAQA s tileset LanZou Cloud Link (pass = 7ugy) 1.4.5",
+    "url": "https://wwbwg.lanzouv.com/iDRxZ4e1aidg",
     "icon": "icons/lanzou.png",
     "d": true
   }
