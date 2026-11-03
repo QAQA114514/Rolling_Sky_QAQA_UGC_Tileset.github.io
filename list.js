@@ -13,14 +13,14 @@
   
   },
   {
-    "name": "QAQA s tileset LanZou Cloud Link (pass = b4mm) 1.4.6",
-    "url": "https://wwbwg.lanzouv.com/is1fr4efe84f",
+    "name": "QAQA s tileset LanZou Cloud Link (pass = afc1) 1.4.7",
+    "url": "https://wwbwg.lanzouv.com/iueeJ4ekg93c",
     "icon": "icons/lanzou.png",
     "d": true
   },
   {
-    "name": "QAQA s tileset with id LanZou Cloud Link (pass = 4bkk) 1.4.6",
-    "url": "https://wwbwg.lanzouv.com/iVGdV4efe7te",
+    "name": "QAQA s tileset with id LanZou Cloud Link (pass = 9zb1) 1.4.7",
+    "url": "https://wwbwg.lanzouv.com/iJn0m4ekg98h",
     "icon": "icons/lanzou.png",
     "d": true
   }
